@@ -6,7 +6,6 @@ class ScreeningV3
     private $screening_id;
     private $apply_date;
     private $status;
-    private $status_name;
     private $applicant_email_address;
     private $interviews;
 
@@ -23,8 +22,7 @@ class ScreeningV3
         $screening->screening_id = new ScreeningId();
         $screening->interviews = new Interviews();
 
-        $screening->status = new ScreeningStatusV4( ScreeningStatusV4::NOTAPPLIED );
-        $screening->status_name = ScreeningStatusV4::NOTAPPLIED;
+        $screening->status = new ScreeningStatusV3( ScreeningStatusV3::NOTAPPLIED );
         $screening->apply_date = null;
 
         return $screening;
@@ -39,7 +37,7 @@ class ScreeningV3
         $screening->screening_id = new ScreeningId();
         $screening->interviews = new Interviews();
 
-        $screening->status = new ScreeningStatusV4( 'Interview' );
+        $screening->status = new ScreeningStatusV3( 'Interview' );
         $screening->apply_date = DateTime::__construct( 'now' );
 
         return $screening;
@@ -54,7 +52,7 @@ class ScreeningV3
         }
     }
 
-    public function reconstruct( ScreeningId $screening_id, DateTime $apply_date, ScreeningStatusV4 $screening_status, EmailAddress $applicant_email_address, Interviews $interviews )
+    public function reconstruct( ScreeningId $screening_id, DateTime $apply_date, ScreeningStatusV3 $screening_status, EmailAddress $applicant_email_address, Interviews $interviews )
     {
         $screening = new ScreeningV3();
         $screening->screening_id = $screening_id;
@@ -67,26 +65,10 @@ class ScreeningV3
     }
 
     /**
-     * @return mixed
-     */
-    public function getStatusName()
-    {
-        return $this->status_name;
-    }
-
-    /**
      * @param mixed $status_name
      */
     public function setStatus( $status_name )
     {
-        $this->status = new ScreeningStatusV4( $status_name );
-    }
-
-    /**
-     * @param mixed $status_name
-     */
-    public function setStatusName( $status_name )
-    {
-        $this->status_name = $status_name;
+        $this->status = new ScreeningStatusV3( $status_name );
     }
 }

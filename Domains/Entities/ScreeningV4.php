@@ -22,7 +22,7 @@ class ScreeningV4
         $screening->screening_id = new ScreeningId();
         $screening->interviews = new Interviews();
 
-        $screening->status = new ScreeningStatusV4( new ScreeningStatusNameV5( ScreeningStatusNameV5::NOTAPPLIED ) );
+        $screening->status = new ScreeningStatusV4( new ScreeningStatusName( ScreeningStatusName::NOTAPPLIED ) );
         $screening->apply_date = null;
 
         return $screening;
@@ -37,7 +37,7 @@ class ScreeningV4
         $screening->screening_id = new ScreeningId();
         $screening->interviews = new Interviews();
 
-        $screening->status = new ScreeningStatusV4( new ScreeningStatusNameV5( ScreeningStatusNameV5::INTERVIEW ) );
+        $screening->status = new ScreeningStatusV4( new ScreeningStatusName( ScreeningStatusName::INTERVIEW ) );
         $screening->apply_date = DateTime::__construct( 'now' );
 
         return $screening;
@@ -52,7 +52,7 @@ class ScreeningV4
         }
     }
 
-    public function reconstruct( ScreeningId $screening_id, DateTime $apply_date, ScreeningStatusNameV5 $screening_status, EmailAddress $applicant_email_address, Interviews $interviews )
+    public function reconstruct( ScreeningId $screening_id, DateTime $apply_date, ScreeningStatusName $screening_status, EmailAddress $applicant_email_address, Interviews $interviews )
     {
         $screening = new ScreeningV4();
         $screening->screening_id = $screening_id;
