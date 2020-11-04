@@ -15,10 +15,10 @@ class ScreeningApplicationServiceV3
 
         $this->permitted_statuses = [
             //before_status => [ after_statuses ]
-            ScreeningStatusV4::NOTAPPLIED => [ ScreeningStatusV4::DOCUMENTSCREENING ],
-            ScreeningStatusV4::DOCUMENTSCREENING => [ ScreeningStatusV4::DOCUMENTSCREENINGREJECTED, ScreeningStatusV4::DOCUMENTSCREENINGDECLINED, ScreeningStatusV4::INTERVIEW ],
-            ScreeningStatusV4::INTERVIEW => [ ScreeningStatusV4::INTERVIEWREJECTED, ScreeningStatusV4::INTERVIEWDECLINED, ScreeningStatusV4::OFFERED ],
-            ScreeningStatusV4::OFFERED => [ ScreeningStatusV4::OFFERDECLINED, ScreeningStatusV4::ENTERED ],
+            ScreeningStatusName::NOTAPPLIED => [ ScreeningStatusName::DOCUMENTSCREENING ],
+            ScreeningStatusName::DOCUMENTSCREENING => [ ScreeningStatusName::DOCUMENTSCREENINGREJECTED, ScreeningStatusName::DOCUMENTSCREENINGDECLINED, ScreeningStatusName::INTERVIEW ],
+            ScreeningStatusName::INTERVIEW => [ ScreeningStatusName::INTERVIEWREJECTED, ScreeningStatusName::INTERVIEWDECLINED, ScreeningStatusName::OFFERED ],
+            ScreeningStatusName::OFFERED => [ ScreeningStatusName::OFFERDECLINED, ScreeningStatusName::ENTERED ],
         ];
     }
 
@@ -41,21 +41,20 @@ class ScreeningApplicationServiceV3
         $this->repo->update( $screening );
     }
 
-    public function updateStatus( ScreeningId $screening_id, $screening_status )
+    public function updateStatus( ScreeningId $screening_id, $screening_status_name )
     {
         $screening = $this->repo->findById( $screening_id );
 
-        if ( !$this->isPermittedStatus( $screening->getStatusName(), $screening_status ) ) {
+        if ( !$this->isPermittedStatus( $screening->getStatus()->name, $screening_status_name ) ) {
             echo '不正な操作です';
         } else {
-            $screening->setStatus( $screening_status );
-            $screening->setStatusName( $screening_status );
+            $screening->setStatus( $screening_status_name );
             $this->repo->update( $screening );
         }
     }
 
-    private function isPermittedStatus( $before_status, $after_status )
+    private function isPermittedStatus( $before_status_name, $after_status_name )
     {
-        return in_array( $after_status, $this->permitted_statuses[ $before_status ] );
+        return in_array( $after_status_name, $this->permitted_statuses[ $before_status_name ] );
     }
 }

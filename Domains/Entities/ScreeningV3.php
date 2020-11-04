@@ -71,4 +71,12 @@ class ScreeningV3
     {
         $this->status = new ScreeningStatusV3( $status_name );
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 }
